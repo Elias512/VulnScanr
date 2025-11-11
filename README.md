@@ -97,7 +97,7 @@ Event handler injection
 
 
 
-
+```
 🏗️ Project Structure
 VulnScanr/
 ├── src/
@@ -112,7 +112,7 @@ VulnScanr/
 ├── docs/
 ├── requirements.txt
 └── README.md
-
+```
 
 
 🎓 Academic Project
