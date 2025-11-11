@@ -1,0 +1,143 @@
+
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>VulnScanr Security Report</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    .header { background: #f4f4f4; padding: 20px; border-radius: 5px; }
+                    .finding { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 5px; }
+                    .critical { border-left: 5px solid #ff4444; }
+                    .high { border-left: 5px solid #ff8800; }
+                    .medium { border-left: 5px solid #ffcc00; }
+                    .low { border-left: 5px solid #00cc66; }
+                    .count { font-size: 1.2em; font-weight: bold; margin: 10px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>🔍 VulnScanr Security Report</h1>
+                    <p><strong>Target:</strong> http://localhost:8080</p>
+                    <p><strong>Scan Date:</strong> 2025-11-10 19:52:19</p>
+                    <p><strong>Total Findings:</strong> 16</p>
+                </div>
+                
+                <div class="count">
+                    📊 Scan Summary: 16 vulnerabilities found
+                </div>
+            
+                <div class="finding high">
+                    <h3>🚨 SQL Injection - High</h3>
+                    <p><strong>Payload:</strong> <code>1'</code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/sqli/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding high">
+                    <h3>🚨 SQL Injection - High</h3>
+                    <p><strong>Payload:</strong> <code>1' OR '1'='1</code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/sqli/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding high">
+                    <h3>🚨 SQL Injection - High</h3>
+                    <p><strong>Payload:</strong> <code>1' OR '1'='1' -- </code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/sqli/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding high">
+                    <h3>🚨 SQL Injection - High</h3>
+                    <p><strong>Payload:</strong> <code>1' UNION SELECT 1,2 -- </code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/sqli/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding high">
+                    <h3>🚨 SQL Injection - High</h3>
+                    <p><strong>Payload:</strong> <code>1' AND 1=1 -- </code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/sqli/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding high">
+                    <h3>🚨 SQL Injection - High</h3>
+                    <p><strong>Payload:</strong> <code>1' AND 1=2 -- </code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/sqli/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding high">
+                    <h3>🚨 SQL Injection - High</h3>
+                    <p><strong>Payload:</strong> <code>admin' OR '1'='1</code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/sqli/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code><script>alert('XSS')</script></code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code><img src=x onerror=alert('XSS')></code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code><svg onload=alert('XSS')></code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code>" onmouseover="alert('XSS')"</code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code>' onfocus='alert("XSS")'</code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code>javascript:alert('XSS')</code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code>"><script>alert('XSS')</script></code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code>'><script>alert('XSS')</script></code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+                <div class="finding medium">
+                    <h3>🚨 XSS - Medium</h3>
+                    <p><strong>Payload:</strong> <code><scr<script>ipt>alert('XSS')</scr</script>ipt></code></p>
+                    <p><strong>URL:</strong> http://localhost:8080/vulnerabilities/xss_r/</p>
+                    <p><strong>Time:</strong> 2025-11-10 19:52:19</p>
+                </div>
+                
+            </body>
+            </html>
+            
