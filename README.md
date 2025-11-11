@@ -78,25 +78,27 @@ python -m src http://localhost:8080 --xss
 # Verbose output
 python -m src http://localhost:8080 --full -v
 
+```
 
 
 
-
-
-\# 🎯 Supported Vulnerabilities
-# SQL Injection
+🎯 Supported Vulnerabilities
+SQL Injection
 Error-based detection
 Union-based attacks
 Boolean-based blind SQLi
 Time-based detection
 
-# Cross-Site Scripting (XSS)
+Cross-Site Scripting (XSS)
 Reflected XSS
 DOM-based XSS
 Various payload contexts
 Event handler injection
 
-\# 🏗️ Project Structure
+
+
+
+🏗️ Project Structure
 VulnScanr/
 ├── src/
 │   ├── scanners/
@@ -111,11 +113,13 @@ VulnScanr/
 ├── requirements.txt
 └── README.md
 
-\# 🎓 Academic Project
+
+
+🎓 Academic Project
 This project was developed as a Final Year Project for BSc Computer Science, demonstrating practical cybersecurity skills and software engineering principles.
 
-\# ⚠️ Disclaimer
+ ⚠️ Disclaimer
 This tool is intended for educational purposes and authorized penetration testing only. Always ensure you have proper authorization before scanning any systems.
 
-\# 📄 License
+📄 License
 MIT License - see LICENSE file for details
