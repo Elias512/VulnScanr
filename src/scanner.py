@@ -112,15 +112,25 @@ class VulnScanr:
 
     # Update the generate_reports method:
     def generate_reports(self):
-        """Generate all reports"""
+        """Generate all reports and show summary"""
         if not self.reporter.findings:
             self.logger.info("📝 No vulnerabilities found to report")
             return
         
         self.logger.info("📄 Generating scan reports...")
-        self.reporter.generate_html_report()
-        self.reporter.generate_json_report()
-        self.logger.info("✅ Reports generated successfully!")
+        
+        # Generate reports
+        html_report = self.reporter.generate_html_report()
+        json_report = self.reporter.generate_json_report()
+        
+        # Show text summary
+        summary = self.reporter.generate_text_summary()
+        self.logger.info(summary)
+        
+        if html_report and json_report:
+            self.logger.info("✅ Reports generated successfully!")
+        else:
+            self.logger.error("❌ Some reports failed to generate")
 
 def main():
     """Main entry point for the scanner"""
@@ -151,11 +161,10 @@ def main():
     
     # Run scans based on arguments
     if args.full:
-        # Run all scans
         scanner.logger.info("🔍 Running FULL security scan...")
         scanner.run_sql_injection_scan()
         scanner.run_xss_scan()
-        scanner.generate_reports()  # Generate reports after full scan
+        scanner.generate_reports()  # This now includes the summary
     elif args.sql:
         scanner.run_sql_injection_scan()
         scanner.generate_reports()
