@@ -75,6 +75,30 @@ python -m src http://localhost:8080 --sql
 # XSS scan only  
 python -m src http://localhost:8080 --xss
 
+# Command injection only
+python -m src http://localhost:8080 --ci
+
+# File Inclusion Only
+python -m src http://localhost:8080 --fi
+
+# Path Traversal Only
+python -m src http://localhost:8080 --pt
+
+# Security Headers Only
+python -m src http://localhost:8080 --headers
+
+# CSRF Only
+python -m src http://localhost:8080 --csrf
+
+# Brute Force Only
+python -m src http://localhost:8080 --bf
+
+# Open Redirect Only
+python -m src http://localhost:8080 --openredirect
+
+# Directory Listing Only
+python -m src http://localhost:8080 --dirlisting
+
 # Verbose output
 python -m src http://localhost:8080 --full -v
 
