@@ -1,68 +1,13 @@
 """
-Directory Listing Scanner Module
-Checks for exposed directory listings on web servers.
+Generic Directory Listing Scanner
 """
 from urllib.parse import urljoin
-from src.utils.logger import setup_logger
+from src.scanners.base import BaseScanner
 
-class DirectoryListingScanner:
-    def __init__(self, session, target_url, verbose=False):
-        self.session = session
-        self.target_url = target_url.rstrip('/')
-        self.verbose = verbose
-        self.logger = setup_logger(verbose)
-        self.vulnerabilities_found = []
-
-    def check_directory(self, directory_path):
-        """
-        Request a directory and check for directory listing indicators.
-        """
-        url = urljoin(self.target_url, directory_path)
-        try:
-            response = self.session.get(url, timeout=10)
-
-            # Common directory listing indicators
-            listing_indicators = [
-                "Index of /",
-                "Directory listing for",
-                "<title>Index of",
-                "Parent Directory</a>",
-                "[To Parent Directory]",
-                "Last modified</a>",
-                "Name</a>",
-                "Size</a>",
-                "Description</a>",
-                "..</a>",  # Parent directory link
-            ]
-
-            # Also check if response content-type is text/html and contains file listing patterns
-            content_type = response.headers.get('Content-Type', '')
-            if 'text/html' in content_type:
-                for indicator in listing_indicators:
-                    if indicator in response.text:
-                        self.logger.warning(f"📁 Directory listing exposed at {url}")
-                        self.logger.debug(f"   Indicator: {indicator}")
-                        self.vulnerabilities_found.append({
-                            "type": "Directory Listing",
-                            "url": url,
-                            "indicator": indicator,
-                            "severity": "Low"
-                        })
-                        return True
-
-            return False
-        except Exception as e:
-            self.logger.debug(f"Error checking {url}: {str(e)}")
-            return False
-
-    def scan_common_directories(self):
-        """
-        Scan a list of common directories that might have listing enabled.
-        """
-        self.logger.info("📂 Scanning for exposed directory listings...")
-        self.vulnerabilities_found = []
-
-        common_dirs = [
+class DirectoryListingScanner(BaseScanner):
+    def __init__(self, session, logger, verbose=False):
+        super().__init__(session, logger, verbose)
+        self.common_dirs = [
             'images', 'img', 'css', 'js', 'uploads', 'files', 'downloads',
             'backup', 'backups', 'old', 'temp', 'tmp', 'logs', 'log',
             'includes', 'inc', 'pages', 'assets', 'static', 'public',
@@ -77,16 +22,43 @@ class DirectoryListingScanner:
             'cgi-bin', 'cgi', 'cgi-bin/',
             'server-status', 'server-info', 'status',
         ]
+        self.listing_indicators = [
+            "Index of /",
+            "Directory listing for",
+            "<title>Index of",
+            "Parent Directory</a>",
+            "[To Parent Directory]",
+            "Last modified</a>",
+            "Name</a>",
+            "Size</a>",
+            "Description</a>",
+            "..</a>",
+        ]
 
-        for directory in common_dirs:
-            # Add trailing slash if missing
-            if not directory.endswith('/'):
-                directory += '/'
-            self.check_directory(directory)
+    def test_url(self, url, method='GET'):
+        # Directory listing is per-directory; we'll check each common dir
+        # But since this scanner is called with a target list, we need to adapt.
+        # For generic scanning, we'll check common directories relative to base.
+        # However, the base scanner's test_url is called with each discovered URL.
+        # So we'll just check if the current URL is a directory and shows listing.
+        self.logger.debug(f"Testing URL for directory listing: {url}")
+        try:
+            response = self.session.get(url, timeout=10)
+            content_type = response.headers.get('Content-Type', '')
+            if 'text/html' in content_type:
+                for indicator in self.listing_indicators:
+                    if indicator in response.text:
+                        self.logger.warning(f"📁 Directory listing exposed at {url}")
+                        self.vulnerabilities_found.append({
+                            "type": "Directory Listing",
+                            "url": url,
+                            "severity": "Low"
+                        })
+                        return True
+        except Exception:
+            pass
+        return False
 
-        if self.vulnerabilities_found:
-            self.logger.warning(f"🎯 Found {len(self.vulnerabilities_found)} exposed directory listings!")
-            return True
-        else:
-            self.logger.info("✅ No directory listings detected")
-            return False
+    def test_form(self, form):
+        # Forms not relevant
+        return False

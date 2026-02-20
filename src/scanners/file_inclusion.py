@@ -1,175 +1,88 @@
 """
-File Inclusion Scanner Module (LFI/RFI)
+Generic File Inclusion Scanner (LFI/RFI)
 """
-from urllib.parse import urljoin
-from bs4 import BeautifulSoup
-from src.utils.logger import setup_logger
+from src.scanners.base import BaseScanner
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
-class FileInclusionScanner:
-    def __init__(self, session, target_url, verbose=False):
-        self.session = session
-        self.target_url = target_url
-        self.verbose = verbose
-        self.logger = setup_logger(verbose)
-        self.vulnerabilities_found = []
-
-    def dvwa_login(self):
-        """Login to DVWA (reuse from other scanners)"""
-        try:
-            self.logger.info("🔐 Attempting to login to DVWA...")
-            login_url = urljoin(self.target_url, "/login.php")
-            get_response = self.session.get(login_url)
-            if get_response.status_code != 200:
-                self.logger.error(f"❌ Failed to access login page. Status: {get_response.status_code}")
-                return False
-            soup = BeautifulSoup(get_response.text, 'html.parser')
-            csrf_token_input = soup.find('input', {'name': 'user_token'})
-            if not csrf_token_input:
-                self.logger.error("❌ Could not find CSRF token on login page")
-                return False
-            csrf_token = csrf_token_input.get('value')
-            self.logger.debug(f"📋 Found CSRF token: {csrf_token}")
-            login_data = {
-                "username": "admin",
-                "password": "password",
-                "Login": "Login",
-                "user_token": csrf_token
-            }
-            post_response = self.session.post(login_url, data=login_data)
-            if "Login failed" in post_response.text:
-                self.logger.error("❌ Login failed - Incorrect username/password")
-                return False
-            elif "PHPSESSID" in self.session.cookies:
-                self.logger.info("✅ Successfully logged into DVWA")
-                self.set_dvwa_security_low()
-                return True
-            else:
-                self.logger.error("❌ Login failed - Unknown reason")
-                return False
-        except Exception as e:
-            self.logger.error(f"💥 Login error: {str(e)}")
-            return False
-
-    def set_dvwa_security_low(self):
-        """Set DVWA security to low"""
-        try:
-            security_url = urljoin(self.target_url, "/security.php")
-            response = self.session.get(security_url)
-            soup = BeautifulSoup(response.text, 'html.parser')
-            csrf_token_input = soup.find('input', {'name': 'user_token'})
-            if not csrf_token_input:
-                self.logger.warning("⚠️ Could not find CSRF token on security page")
-                return
-            csrf_token = csrf_token_input.get('value')
-            security_data = {
-                "security": "low",
-                "seclev_submit": "Submit",
-                "user_token": csrf_token
-            }
-            response = self.session.post(security_url, data=security_data)
-            if "Security level is currently: low" in response.text:
-                self.logger.info("✅ DVWA security level set to LOW")
-            else:
-                self.logger.warning("⚠️ Could not verify security level change")
-        except Exception as e:
-            self.logger.warning(f"⚠️ Could not set security level: {str(e)}")
-
-    def test_dvwa_file_inclusion_page(self):
-        """Test DVWA's File Inclusion page for LFI/RFI"""
-        self.logger.info("🎯 Testing DVWA File Inclusion page...")
-        self.vulnerabilities_found = []
-
-        if not self.dvwa_login():
-            self.logger.error("🚫 Cannot proceed without DVWA login")
-            return False
-
-        fi_url = urljoin(self.target_url, "/vulnerabilities/fi/")
-        vulnerabilities_found = 0
-
-        # LFI payloads (Local File Inclusion)
-        lfi_payloads = [
+class FileInclusionScanner(BaseScanner):
+    def __init__(self, session, logger, verbose=False):
+        super().__init__(session, logger, verbose)
+        self.payloads = [
             "../../../../etc/passwd",
             "..\\..\\..\\..\\windows\\win.ini",
             "../../../../etc/hosts",
             "php://filter/convert.base64-encode/resource=../../../../etc/passwd",
-            "php://filter/convert.base64-encode/resource=index.php",
             "file:///etc/passwd",
+            "http://localhost:8081/",  # RFI test (self-referential)
+        ]
+        self.indicators = [
+            "root:", "daemon:", "bin:", "sys:",
+            "[extensions]", "for 16-bit app support",
+            "localhost", "::1",
+            "<?php", "base64",
         ]
 
-        # RFI payloads (Remote File Inclusion) – for testing we can use a local file via HTTP wrapper
-        # In DVWA low security, RFI is enabled, but we'll test with a simple external check.
-        rfi_payloads = [
-            "http://localhost:8081/?",
-            "http://127.0.0.1:8081/",
-            "https://www.google.com/",  # Would be blocked likely
-        ]
-
-        # Combined list for testing
-        test_payloads = lfi_payloads + rfi_payloads
-
-        for payload in test_payloads:
-            try:
-                self.logger.debug(f"🧪 Testing payload: {payload}")
-                params = {"page": payload}
-                response = self.session.get(fi_url, params=params)
-
-                if self.is_file_inclusion_successful(response.text, payload):
-                    self.logger.warning(f"📁 FILE INCLUSION VULNERABILITY FOUND!")
-                    self.logger.warning(f"   Payload: {payload}")
-                    self.logger.warning(f"   URL: {fi_url}")
-                    self.vulnerabilities_found.append({
-                        "payload": payload,
-                        "url": fi_url,
-                        "type": "File Inclusion"
-                    })
-                    vulnerabilities_found += 1
-
-            except Exception as e:
-                self.logger.error(f"❌ Error testing payload {payload}: {str(e)}")
-
-        if vulnerabilities_found > 0:
-            self.logger.warning(f"🎯 Found {vulnerabilities_found} File Inclusion vulnerabilities!")
-            return True
-        else:
-            self.logger.info("✅ No File Inclusion vulnerabilities detected")
+    def test_url(self, url, method='GET'):
+        self.logger.debug(f"Testing URL for file inclusion: {url}")
+        parsed = urlparse(url)
+        params = parse_qs(parsed.query) if parsed.query else {}
+        if not params:
             return False
 
-    def is_file_inclusion_successful(self, response_text, payload):
-        """Detect if file inclusion succeeded based on response content."""
-        # Indicators of successful LFI
-        lfi_indicators = [
-            "root:",          # /etc/passwd entry
-            "daemon:",
-            "bin:",
-            "sys:",
-            "[extensions]",   # win.ini
-            "for 16-bit app support",
-            "localhost",      # /etc/hosts
-            "::1",            # /etc/hosts
-            "<?php",          # PHP source code (via php filter)
-            "base64",         # base64 encoded output
-        ]
+        for param in params:
+            for payload in self.payloads:
+                injected_url = self._inject_parameter(url, param, payload)
+                if not injected_url:
+                    continue
+                try:
+                    response = self.session.get(injected_url, timeout=10)
+                    if self._is_file_inclusion_successful(response.text):
+                        self.logger.warning(f"📁 File inclusion found: {url} param={param} payload={payload}")
+                        self.vulnerabilities_found.append({
+                            "type": "File Inclusion",
+                            "url": url,
+                            "parameter": param,
+                            "payload": payload,
+                            "severity": "High"
+                        })
+                        return True
+                except Exception as e:
+                    self.logger.debug(f"Error testing {param}: {e}")
+        return False
 
-        # Indicators of RFI attempt (e.g., inclusion of external content)
-        # For RFI, if the page includes an external script, it might execute and output something.
-        # But in DVWA, RFI may show "include()" errors or actually include content.
-        rfi_indicators = [
-            "http://",        # If the included URL appears in response? Not reliable.
-            "failed to open stream",  # PHP error when include fails
-            "Unable to include",      # Custom error
-        ]
+    def test_form(self, form):
+        self.logger.debug(f"Testing form for file inclusion: {form['url']}")
+        inputs = form.get('inputs', [])
+        testable = [i for i in inputs if i.get('name')]
+        if not testable:
+            return False
 
-        for indicator in lfi_indicators:
-            if indicator.lower() in response_text.lower():
-                self.logger.debug(f"   Found LFI indicator: {indicator}")
+        for inp in testable:
+            param = inp['name']
+            for payload in self.payloads:
+                data = self._build_form_data(form, param, payload)
+                try:
+                    if form['method'].upper() == 'POST':
+                        response = self.session.post(form['url'], data=data, timeout=10)
+                    else:
+                        response = self.session.get(form['url'], params=data, timeout=10)
+                    if self._is_file_inclusion_successful(response.text):
+                        self.logger.warning(f"📁 File inclusion found in form {form['url']} param={param} payload={payload}")
+                        self.vulnerabilities_found.append({
+                            "type": "File Inclusion",
+                            "url": form['url'],
+                            "parameter": param,
+                            "payload": payload,
+                            "severity": "High"
+                        })
+                        return True
+                except Exception as e:
+                    self.logger.debug(f"Error testing form {param}: {e}")
+        return False
+
+    def _is_file_inclusion_successful(self, response_text):
+        text = response_text.lower()
+        for indicator in self.indicators:
+            if indicator.lower() in text:
                 return True
-
-        # For RFI, we can look for signs that the remote inclusion was attempted/executed.
-        # In DVWA, if RFI is enabled, it might fetch and output the remote file.
-        # We'll check if the response contains "Warning: include("http"..." or the remote content.
-        # For simplicity, if we see a remote URL in the response or an error about inclusion, flag it.
-        if "include(" in response_text.lower() and ("http:" in response_text.lower() or "https:" in response_text.lower()):
-            self.logger.debug("   Found RFI attempt indicator")
-            return True
-
         return False

@@ -1,0 +1,380 @@
+URL: http://localhost:8180/phpMyAdmin/index.php
+Method: POST
+Inputs: 8
+Page: http://localhost:8180/phpMyAdmin/
+
+URL: http://localhost:8180/phpMyAdmin/index.php
+Method: POST
+Inputs: 9
+Page: http://localhost:8180/phpMyAdmin/
+
+URL: http://localhost:8180/dvwa/login.php
+Method: POST
+Inputs: 3
+Page: http://localhost:8180/dvwa/
+
+URL: http://TWiki.org/cgi-bin/passwd/TWiki/WebHome
+Method: POST
+Inputs: 6
+Page: http://localhost:8180/twiki/TWikiDocumentation.html
+
+URL: http://TWiki.org/cgi-bin/passwd/Main/WebHome
+Method: POST
+Inputs: 4
+Page: http://localhost:8180/twiki/TWikiDocumentation.html
+
+URL: http://localhost:8180/twiki/TWikiDocumentation.html
+Method: GET
+Inputs: 6
+Page: http://localhost:8180/twiki/TWikiDocumentation.html
+
+URL: http://TWiki.org/cgi-bin/edit/TWiki/
+Method: GET
+Inputs: 2
+Page: http://localhost:8180/twiki/TWikiDocumentation.html
+
+URL: http://TWiki.org/cgi-bin/view/TWiki/TWikiSkins
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/TWikiDocumentation.html
+
+URL: http://TWiki.org/cgi-bin/manage/TWiki/ManagingWebs
+Method: POST
+Inputs: 8
+Page: http://localhost:8180/twiki/TWikiDocumentation.html
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/SearchResult
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/WebHome
+
+URL: http://localhost:8180/mutillidae/index.php?page=view-someones-blog.php
+Method: POST
+Inputs: 1
+Page: http://localhost:8180/mutillidae/index.php?page=view-someones-blog.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=login.php
+Method: POST
+Inputs: 3
+Page: http://localhost:8180/mutillidae/?page=login.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=text-file-viewer.php
+Method: POST
+Inputs: 1
+Page: http://localhost:8180/mutillidae/index.php?page=text-file-viewer.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=view-someones-blog.php
+Method: POST
+Inputs: 1
+Page: http://localhost:8180/mutillidae/?page=view-someones-blog.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=pen-test-tool-lookup.php
+Method: POST
+Inputs: 0
+Page: http://localhost:8180/mutillidae/index.php?page=pen-test-tool-lookup.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=register.php
+Method: POST
+Inputs: 4
+Page: http://localhost:8180/mutillidae/index.php?page=register.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=user-info.php
+Method: GET
+Inputs: 4
+Page: http://localhost:8180/mutillidae/index.php?page=user-info.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=login.php
+Method: POST
+Inputs: 3
+Page: http://localhost:8180/mutillidae/index.php?page=login.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=user-info.php
+Method: GET
+Inputs: 4
+Page: http://localhost:8180/mutillidae/?page=user-info.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=source-viewer.php
+Method: POST
+Inputs: 2
+Page: http://localhost:8180/mutillidae/index.php?page=source-viewer.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=add-to-your-blog.php
+Method: POST
+Inputs: 2
+Page: http://localhost:8180/mutillidae/?page=add-to-your-blog.php
+
+URL: http://localhost:8180/mutillidae/index.php
+Method: GET
+Inputs: 15
+Page: http://localhost:8180/mutillidae/index.php?page=user-poll.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=add-to-your-blog.php
+Method: POST
+Inputs: 2
+Page: http://localhost:8180/mutillidae/index.php?page=add-to-your-blog.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=dns-lookup.php
+Method: POST
+Inputs: 2
+Page: http://localhost:8180/mutillidae/index.php?page=dns-lookup.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=html5-storage.php
+Method: POST
+Inputs: 4
+Page: http://localhost:8180/mutillidae/index.php?page=html5-storage.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=set-background-color.php
+Method: POST
+Inputs: 2
+Page: http://localhost:8180/mutillidae/index.php?page=set-background-color.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=text-file-viewer.php
+Method: POST
+Inputs: 1
+Page: http://localhost:8180/mutillidae/?page=text-file-viewer.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=source-viewer.php
+Method: POST
+Inputs: 2
+Page: http://localhost:8180/mutillidae/?page=source-viewer.php
+
+URL: http://localhost:8180/mutillidae/index.php?page=password-generator.php&username=anonymous
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/mutillidae/index.php?page=password-generator.php&username=anonymous
+
+URL: http://localhost:8180/twiki/bin/view/Main/TWikiUsers
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/TWikiUsers
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/StartingPoints
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/StartingPoints
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebSearch
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/WebSearch
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 5
+Page: http://localhost:8180/twiki/bin/view/Main/WebSearch
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 12
+Page: http://localhost:8180/twiki/bin/view/Main/WebSearch
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/TWikiPreferences
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiPreferences
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/WebHome?rev=1.18
+
+URL: http://localhost:8180/twiki/bin/search/Main/SearchResult
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/WebHome?rev=1.18
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/SearchResult
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 0
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 0
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 3
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 2
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Main/
+Method: GET
+Inputs: 3
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+
+URL: http://localhost:8180/twiki/bin/edit/Main/WebHome?t=1771568414
+Method: GET
+Inputs: 0
+Page: http://localhost:8180/twiki/bin/oops/Main/WebHome?template=oopsmore&param1=1.20&param2=1.20
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebHome
+Method: GET
+Inputs: 2
+Page: http://localhost:8180/twiki/bin/oops/Main/WebHome?template=oopsmore&param1=1.20&param2=1.20
+
+URL: http://localhost:8180/twiki/bin/rdiff/Main/WebHome
+Method: GET
+Inputs: 2
+Page: http://localhost:8180/twiki/bin/oops/Main/WebHome?template=oopsmore&param1=1.20&param2=1.20
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+
+URL: http://localhost:8180/twiki/bin/passwd/TWiki/WebHome
+Method: POST
+Inputs: 6
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+
+URL: http://localhost:8180/twiki/bin/passwd/Main/WebHome
+Method: POST
+Inputs: 4
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+Method: GET
+Inputs: 6
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+
+URL: http://localhost:8180/twiki/bin/edit/TWiki/
+Method: GET
+Inputs: 2
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/TWikiSkins
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+
+URL: http://localhost:8180/twiki/bin/manage/TWiki/ManagingWebs
+Method: POST
+Inputs: 8
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiDocumentation
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/TWiki/
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/TWiki/SearchResult
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/WebHome
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/TWikiSite
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiSite
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/TextFormattingFAQ
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/TextFormattingFAQ
+
+URL: http://localhost:8180/twiki/bin/view/Main/TWikiGroups
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/TWikiGroups
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/search/Main/SearchResult?scope=text&regex=on&search=Web%20*Home%5B%5EA-Za-z%5D
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/rdiff/Main/WebHome?rev1=1.20&rev2=1.19
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/WebSearch
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/WebSearch
+
+URL: http://localhost:8180/twiki/bin/search/TWiki/
+Method: GET
+Inputs: 5
+Page: http://localhost:8180/twiki/bin/view/TWiki/WebSearch
+
+URL: http://localhost:8180/twiki/bin/search/TWiki/
+Method: GET
+Inputs: 12
+Page: http://localhost:8180/twiki/bin/view/TWiki/WebSearch
+
+URL: http://localhost:8180/twiki/bin/view/Know/WebChanges
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Know/WebChanges
+
+URL: http://localhost:8180/twiki/bin/view/Main/TWikiUsers
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/TWikiUsers?rev=1.15
+
+URL: http://localhost:8180/twiki/bin/view/Main/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/search/Main/SearchResult?scope=text&regex=on&search=TWiki%20*Users%5B%5EA-Za-z%5D
+
+URL: http://localhost:8180/twiki/bin/view/TWiki/TWikiRegistration
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiRegistration
+
+URL: http://localhost:8180/twiki/bin/register/Main/WebHome
+Method: POST
+Inputs: 7
+Page: http://localhost:8180/twiki/bin/view/TWiki/TWikiRegistration
+
+URL: http://localhost:8180/twiki/bin/upload/Main/TWikiUsers
+Method: POST
+Inputs: 5
+Page: http://localhost:8180/twiki/bin/attach/Main/TWikiUsers
+
+URL: http://localhost:8180/twiki/bin/view/Main/TWikiUsers
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Main/TWikiUsers?rev=1.16
+
+URL: http://localhost:8180/twiki/bin/view/Know/WebHome
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Know/WebHome
+
+URL: http://localhost:8180/twiki/bin/search/Know/SearchResult
+Method: GET
+Inputs: 1
+Page: http://localhost:8180/twiki/bin/view/Know/WebHome
+

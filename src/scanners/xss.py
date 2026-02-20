@@ -1,92 +1,85 @@
 """
-XSS (Cross-Site Scripting) Scanner Module
+Generic XSS Scanner
 """
-import time
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin
-from src.utils.logger import setup_logger
+from src.scanners.base import BaseScanner
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
-class XSSScanner:
-    def __init__(self, session, target_url, verbose=False):
-        self.session = session
-        self.target_url = target_url
-        self.verbose = verbose
-        self.logger = setup_logger(verbose)
-        
-        # XSS payloads for different contexts
+class XSSScanner(BaseScanner):
+    def __init__(self, session, logger, verbose=False):
+        super().__init__(session, logger, verbose)
         self.payloads = [
-            # Basic XSS
             "<script>alert('XSS')</script>",
             "<img src=x onerror=alert('XSS')>",
             "<svg onload=alert('XSS')>",
-            # Event handlers
             "\" onmouseover=\"alert('XSS')\"",
             "' onfocus='alert(\"XSS\")'",
-            # JavaScript URIs
             "javascript:alert('XSS')",
-            # Break out of attributes
             "\"><script>alert('XSS')</script>",
             "'><script>alert('XSS')</script>",
-            # Encoded payloads
             "<scr<script>ipt>alert('XSS')</scr</script>ipt>",
         ]
 
-        self.vulnerabilities_found = []  # Track found vulnerabilities
-
-    def test_dvwa_xss_page(self):
-        """Test DVWA's XSS vulnerability page"""
-        self.logger.info("🎯 Testing DVWA XSS page...")
-        self.vulnerabilities_found = []  # Reset findings
-        
-        # Test reflected XSS page
-        xss_url = urljoin(self.target_url, "/vulnerabilities/xss_r/")
-        vulnerabilities_found = 0
-        
-        for payload in self.payloads:
-            try:
-                self.logger.debug(f"🧪 Testing XSS payload: {payload}")
-                
-                # Send request with payload
-                params = {"name": payload, "Submit": "Submit"}
-                response = self.session.get(xss_url, params=params)
-                
-                # Check if payload is reflected without sanitization
-                if self.is_xss_vulnerable(response.text, payload):
-                    self.logger.warning(f"🎯 XSS VULNERABILITY FOUND!")
-                    self.logger.warning(f"   Payload: {payload}")
-                    self.logger.warning(f"   URL: {xss_url}")
-                    self.vulnerabilities_found.append((payload, xss_url))  # Track finding
-                    vulnerabilities_found += 1
-                    
-            except Exception as e:
-                self.logger.error(f"❌ Error testing XSS payload {payload}: {str(e)}")
-        
-        if vulnerabilities_found > 0:
-            self.logger.warning(f"🎯 Found {vulnerabilities_found} XSS vulnerabilities!")
-            return True
-        else:
-            self.logger.info("✅ No XSS vulnerabilities detected")
+    def test_url(self, url, method='GET'):
+        self.logger.debug(f"Testing URL for XSS: {url}")
+        parsed = urlparse(url)
+        params = parse_qs(parsed.query) if parsed.query else {}
+        if not params:
             return False
 
-    def is_xss_vulnerable(self, response_text, payload):
-        """Detect if XSS payload is reflected without sanitization"""
-        # Check if payload appears in response without encoding
+        for param in params:
+            for payload in self.payloads:
+                injected_url = self._inject_parameter(url, param, payload)
+                if not injected_url:
+                    continue
+                try:
+                    response = self.session.get(injected_url, timeout=10)
+                    if self._is_xss_vulnerable(response.text, payload):
+                        self.logger.warning(f"🎯 XSS found: {url} param={param} payload={payload}")
+                        self.vulnerabilities_found.append({
+                            "type": "XSS",
+                            "url": url,
+                            "parameter": param,
+                            "payload": payload,
+                            "severity": "Medium"
+                        })
+                        return True
+                except Exception as e:
+                    self.logger.debug(f"Error testing {param}: {e}")
+        return False
+
+    def test_form(self, form):
+        self.logger.debug(f"Testing form for XSS: {form['url']}")
+        inputs = form.get('inputs', [])
+        testable = [i for i in inputs if i.get('name')]
+        if not testable:
+            return False
+
+        for inp in testable:
+            param = inp['name']
+            for payload in self.payloads:
+                data = self._build_form_data(form, param, payload)
+                try:
+                    if form['method'].upper() == 'POST':
+                        response = self.session.post(form['url'], data=data, timeout=10)
+                    else:
+                        response = self.session.get(form['url'], params=data, timeout=10)
+                    if self._is_xss_vulnerable(response.text, payload):
+                        self.logger.warning(f"🎯 XSS found in form {form['url']} param={param} payload={payload}")
+                        self.vulnerabilities_found.append({
+                            "type": "XSS",
+                            "url": form['url'],
+                            "parameter": param,
+                            "payload": payload,
+                            "severity": "Medium"
+                        })
+                        return True
+                except Exception as e:
+                    self.logger.debug(f"Error testing form {param}: {e}")
+        return False
+
+    def _is_xss_vulnerable(self, response_text, payload):
+        # Check if payload is reflected without encoding
         if payload in response_text:
             return True
-        
-        # Check for partial reflection (common in XSS)
-        soup = BeautifulSoup(response_text, 'html.parser')
-        
-        # Check if payload appears in script tags
-        script_tags = soup.find_all('script')
-        for script in script_tags:
-            if script.string and payload in script.string:
-                return True
-        
-        # Check if payload appears in attribute contexts
-        for tag in soup.find_all():
-            for attr in tag.attrs:
-                if payload in str(tag.attrs[attr]):
-                    return True
-        
+        # Additional checks (e.g., in script tags, attributes) can be added
         return False
