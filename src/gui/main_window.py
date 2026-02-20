@@ -96,9 +96,25 @@ class VulnScanrGUI:
         self.scan_mode = tk.StringVar(value="legacy")
         
         tk.Radiobutton(controls_frame, text="🚀 Crawl & Scan (Recommended)", variable=self.scan_mode,
-                       value="crawl_and_scan", bg='#f0f0f0', anchor='w').pack(fill=tk.X, pady=2)
+                    value="crawl_and_scan", bg='#f0f0f0', anchor='w').pack(fill=tk.X, pady=2)
         tk.Radiobutton(controls_frame, text="📋 Legacy Scan (Individual)", variable=self.scan_mode,
-                       value="legacy", bg='#f0f0f0', anchor='w').pack(fill=tk.X, pady=2)
+                    value="legacy", bg='#f0f0f0', anchor='w').pack(fill=tk.X, pady=2)
+
+        # Mode info label (dynamic hint)
+        self.mode_info_label = tk.Label(controls_frame, text="", bg='#f0f0f0', fg='#e74c3c', font=('Arial', 9, 'italic'))
+        self.mode_info_label.pack(anchor='w', pady=(0,10))
+
+        # Function to update the label when mode changes
+        def update_mode_info(*args):
+            if self.scan_mode.get() == "legacy":
+                self.mode_info_label.config(text="⚠️ Legacy mode only works on DVWA.")
+            else:
+                self.mode_info_label.config(text="🚀 Crawl & Scan works on any website (recommended).")
+
+        # Trace the variable
+        self.scan_mode.trace('w', update_mode_info)
+        # Call once to set initial state
+        update_mode_info()
 
         # Separator
         ttk.Separator(controls_frame, orient='horizontal').pack(fill=tk.X, pady=10)
@@ -240,7 +256,7 @@ class VulnScanrGUI:
 
         self.tree = ttk.Treeview(
             table_frame,
-            columns=('Type', 'URL', 'Parameter', 'Payload', 'Severity'),
+            columns=('Type', 'URL', 'Payload', 'Severity'),
             show='headings',
             yscrollcommand=tree_scroll_y.set,
             xscrollcommand=tree_scroll_x.set
@@ -253,15 +269,13 @@ class VulnScanrGUI:
         # Define headings
         self.tree.heading('Type', text='Type')
         self.tree.heading('URL', text='URL')
-        self.tree.heading('Parameter', text='Parameter')
         self.tree.heading('Payload', text='Payload')
         self.tree.heading('Severity', text='Severity')
 
         # Set column widths
         self.tree.column('Type', width=150)
         self.tree.column('URL', width=400)
-        self.tree.column('Parameter', width=150)
-        self.tree.column('Payload', width=300)
+        self.tree.column('Payload', width=400)
         self.tree.column('Severity', width=80)
 
         # Results summary label (below notebook)
@@ -454,16 +468,13 @@ class VulnScanrGUI:
             return
         findings = self.current_scanner.reporter.findings
         for finding in findings:
-            # Determine how to extract fields
             vuln_type = finding.get('type', 'Unknown')
             url = finding.get('url', '')
-            # For missing headers, 'header' may be present
-            parameter = finding.get('parameter', finding.get('header', ''))
             payload = finding.get('payload', '')
             if isinstance(payload, dict):
                 payload = str(payload)
             severity = finding.get('severity', 'Info')
-            self.tree.insert('', tk.END, values=(vuln_type, url, parameter, payload, severity))
+            self.tree.insert('', tk.END, values=(vuln_type, url, payload, severity))
 
     def scan_complete(self, success):
         """Handle scan completion"""
