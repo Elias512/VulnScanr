@@ -504,7 +504,7 @@ class VulnScanrGUI:
             webbrowser.open('file://' + os.path.realpath(self.report_path))
         else:
             messagebox.showinfo("Report", "No report available yet.")
-
+    
     def run(self):
         """Start the GUI application"""
         self.root.mainloop()
